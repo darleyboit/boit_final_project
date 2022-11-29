@@ -1,0 +1,9 @@
+2016 Survey of Self-identified Non-Hispanics with Hispanic Ancestry
+Field dates: 11/11/15 - 02/07/16
+Respondents: Nationally representative sample of individuals ages 18 and older who do not identify as Latino or Hispanic but report having Hispanic, Latino, Latin American or Spanish ancestry or heritage. 
+Margin of Error: +/- 5.9 percentage points at the 95% confidence interval. 
+This survey focused on identity, changes in racial identification overtime, parents' views about Hispanicity, advantages and disadvantages of being Hispanic, political views, assimilation and the economy. 
+
+Publications from this dataset: 
+- Naturalization rate among U.S. immigrants up since 2005, with India among the biggest gainers, January 2018
+- Hispanic Identity Fades Across Generations as Immigrant Connections Fall Away, December 2017
