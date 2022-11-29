@@ -1,7 +1,7 @@
 ---
 title: "Gov 50 Final Project"
-author: "Your Name Here"
-description: "My final project"
+author: "Darley Boit"
+description: "On Hispanic-Latinx Self Identifying Individuals"
 output:
   distill::distill_article:
     self_contained: false
@@ -9,48 +9,68 @@ output:
 
 
 
-## Project thoughts
+## Introduction
 
----- milestone 1: 
+This final project will explore data related to the Hispanic/Latinx identity in the United States. This data set from the Pew Research Center analyzes how individuals with Hispanic/Latinx ancestry do or do not identify with the terms. *Note that "Hispanic" is a term representing people whose family is from a Spanish speaking country and "Latinx" is a term representing people whose family is from Latin America. Oftentimes individuals identify with both terms but there are some outlier countries (Brazil, Spain, Belize, etc.) The differences between these terms is not particularly relevant to this project, and so I will use "Hispanic/Latinx" (or "HL") as an umbrella label. 
 
-I am interested in exploring data related to identity, specifically the Hispanic/Latinx identity in the United States.This data set from the Pew Research Center analyzes how individuals with Hispanic/Latinx ancestry do or do not identify with the terms. 
+This topic is of particular interest to me because I hold dual citizenship with Brazil (where my grandfather is from). I myself tend to identify as white -- especially if the only two options are "white, not hispanic/latinx" or "hispanic/latinx", and if there is no overlap between the two. I would generally tend to identify more with Brazil than with any HL identity, as I am racially white. In observing HL friends, I have seen that many of them identify most strongly with their family's origin country than a HL identity as well. This final project aims to explain the variation HL self-identification across individuals with HL ancestry.
 
-This is of particular interest to me as a dual citizen with Brazil (where my grandfather is from). I myself tend to identify as white -- especially if the only two options are 'white, not hispanic/latino' or 'hispanic/latino', and if there is no overlap between the two. I would generally tend to identify more with Brazil than with any Latin identity, especially as I am racially white. I think it is relatively common among Latin/Hispanic people to identify most strongly with orgin country... thus I will also take origin country into account in this study. 
+## Data and Research Design 
 
-I would like to examine how individuals WITH HISPANIC/LATIN heritage identify racially. I will only look at participants with some sort of hispanic/latin ancestry. I'm thinking of having three main variables: race (hispanic or latino vs. not hispanic/latino); hispanic/latin ancestry (either yes or no); and grouping of origin country. 
+Individuals with hispanic and latinx ancestry vary noticeably in their self identification in being HL. This project will only examine how individuals with HL heritage self-identify (or do not). I will only look at participants with some sort of HL ancestry. The broader question that I aim to answer is why some individuals with HL ancestry do identify with the HL identity while others do not. 
 
-Those with hispanic/latin heritage who identify as hispanic/latin will be considered "self identifying". Those with only ancestry of, but no racial self-identification, will be what I hope to explain through examining this dataset. 
+The dataset I will use in this project is from Pew Research Center, a reliable and non-partisan "fact-tank". The specific dataset polls adults with HL ancestry on a variety of questions. The  questions asked on this survey that are relevant to this final project include firstly if they self-identify as HL (with all those surveyed having some sort of HL ancestry), and also if their mother, father, grandparents (both paternal and maternal), and great grandparents have HL ancestry. The survey was administered in the United States via telephone in the winter spanning from November 2015 to February 2016.
 
+HL self-identification (or lack thereof) is my dependent -- or outcome -- variable. I will examine two independent -- or explanatory -- variables in my analysis. The first independent variable will be maternal lineage of HL ancestry vs. paternal lineage of HL ancestry. The maternal lineage will be measured based on the yes/no responses to if the individual's mother, maternal grandparents, or maternal great grandparents have HL ancestry. The paternal lineage will be measured based on the yes/no responses to if the individual's father, paternal grandparents, or paternal great grandparents have HL ancestry. The second independent variable will be the degree of ancestry (were your your parents, your grandparents, your great grandparents born in or outside of the US). These are measured based on questions on a PEW Research Center survey, all answered in a yes/no format. 
 
----- milestone 2: 
+I hypothesize that those who were born in a latinx or hispanic country (or have an immigrant parent) AND those who have 2 parents that are hispanic/latinx will identify more strongly. I hypothesize that stronger associations with the HL identity will be passed from foreign parents because they likely immigranted from the HL country. I hypothesize that stronger associations with the HL identity will be passed maternally because -- due to typical gender roles -- women tend to be more involved in child rearing. 
 
+This research project has an observational research design, because it observes the independent and dependent variables without changing any variables in the equation. 
 
-My research question is... 
+The data set I use in this project is also accessible here. https://www.pewresearch.org/hispanic/dataset/2016-survey-of-self-identified-non-hispanics-with-hispanic-ancestry/
 
-Individuals with hispanic and latinx heritage vary in their self identification in being hispanic and/or latinx. Does this vary across generations -- in their separation from their ancestors -- and is there variation across countries that might also influence it? 
-
-dependent variable: self-identifying as hispanic or latinx
-independent variables: degree of ancestry (were you born there, your parents, your grandparents) + country of ancestry 
-
-These are measured based on questions on a survey, all in a yes/no format, with the exception of the country of ancestry (which is a fill in the bubble with options of all hispanic/latinx countries). 
-
-Hypothesis: Those who were born in a latinx or hispanic country AND those who have 2 parents that are hispanic/latinx will identify more strongly. Those with only one parent will do so less, along with those with 2+ levels of separation. In terms of origin countries, I believe that that will only have a strong impact after 2 levels of separation. At which point, only people from countries that have a strong immigrant prescence in the US will continue to associate strongly with hispanic/latinx heritage. 
-
-https://www.pewresearch.org/hispanic/dataset/2016-survey-of-self-identified-non-hispanics-with-hispanic-ancestry/
-
-
-
+Below is a plot showing the distribution of the outcome variable: 
 
 ```{r}
 library(haven)
 library(sjlabelled)
 library(tidyverse)
 library(infer)
-
-pew <- read_sav("Data/Pew/NSL2015 Omnibus_FOR RELEASE.sav") |>
+pew <- read_sav("Pew/NSL2015 Omnibus_FOR RELEASE.sav")|>
   sjlabelled::as_label()
-
+view(pew)
 ```
+
+```{r}
+data <- pew |>
+  select(q1, q4, q7q8_combo, q11a, q11b)
+data
+```
+
+
+*****NEED TO MAKE A PLOT OF THIS OUTCOME VARIABLE******
+
+
+## Results 
+CODING:
+- Bivariate plot of the outcome (y-axis) and explanatory (x-axis) variable
+- Discussion of bivariate plot
+- Table of regression results
+
+WRITTEN:
+- Discussion of regression results (coefficients, substantive meaning)
+- Discussion of significance (p-value, substantive meaning)
+- Discussion of causality, e.g. can the findings be interpreted causally? Why or why not?
+- Discussion of confounders, e.g. what could be a confounder, how could it influence the explanatory variable, how could it influence the outcome variable, is this confounder in your dataset and controlled for in your regression model?
+
+## Conclusion 
+- summary of findings
+- limitations of final project analyses 
+- possible improvements 
+
+
+
+## WORK FROM BEFORE: 
 
 ```{r}
 nationality <- pew |>
