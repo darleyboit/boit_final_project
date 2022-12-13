@@ -8,78 +8,147 @@ output:
 ---
 ## Introduction
 
-This final project will explore data related to the Hispanic/Latinx identity in the United States. This data set from the Pew Research Center analyzes how individuals with Hispanic/Latinx ancestry do or do not identify with the terms. *Note that "Hispanic" is a term representing people whose family is from a Spanish speaking country and "Latinx" is a term representing people whose family is from Latin America. Oftentimes individuals identify with both terms but there are some outlier countries (Brazil, Spain, Belize, etc.) The differences between these terms is not particularly relevant to this project, and so I will use "Hispanic/Latinx" (or "HL") as an umbrella label. 
+This final project will explore data related to smoking in high schools in California. The smoking epidemic is terrifying, and the vast majority of nicotine addicts begin smoking in high school. According to the National Cancer Institute, 90% of daily cigarette smokers started before the age of eighteen ... which is in high school. The data is from Data.Gov (which is also available at this link: https://catalog.data.gov/dataset/proportion-of-high-school-students-who-smoked-cigarettes-in-the-past-30-days-lghc-indicato-46afc).  The data draws from California high schools.
 
-This topic is of particular interest to me because I hold dual citizenship with Brazil (where my grandfather is from). I myself tend to identify as white -- especially if the only two options are "white, not hispanic/latinx" or "hispanic/latinx", and if there is no overlap between the two. I would generally tend to identify more with Brazil than with any HL identity, as I am racially white. In observing HL friends, I have seen that many of them identify most strongly with their family's origin country than a HL identity as well. This final project aims to explain the variation HL self-identification across individuals with HL ancestry.
+I think it is important to look at this sort of data set firstly because we KNOW -- from statistics like the National Cancer Institute's -- that high schoolers are the most at risk for developing cigarette addictions. Smoking cigarettes is linked to roughly 80-90% of lung cancer deaths in the United States, according to the CDC, and over 130 thousand people die of lung cancer annually (on average) in the US, according to Lung Cancer Facts 2022. In order to understand the root of this epidemic -- and combat it -- we must better understand which teenagers are most at risk so that we can best allocate our resources to fighting nicotine addictions. 
+
+This topic is of particular interest to me because my grandma (a smoker) died of cancer, and I have several friends with nicotine addictions who developed them in high school. Though we had some anti-smoking notices, there were very few. I also grew up in Alcoholics Anonymous meetings, where the vast majority of people smoked. Listening to individuals' stories, week after week, I learned at a young age that most of them started drinking and smoking in high school. I would like to do this project in order to assemble quantitative data to help inform anti-smoking campaigns so that they can be as effective as possible. It is truly an epidemic, and I hope that this project will give greater insight into who is at the greatest risk. 
 
 ## Data and Research Design 
 
-Individuals with hispanic and latinx ancestry vary noticeably in their self identification in being HL. This project will only examine how individuals with HL heritage self-identify (or do not). I will only look at participants with some sort of HL ancestry. The broader question that I aim to answer is why some individuals with HL ancestry do identify with the HL identity while others do not. 
+Individual teenagers (in high school) who smoke vary in their demographics, both in terms of their racial identity and their sex identity (ie. male v female). This project only examines students who do smoke cigarettes. 
 
-The dataset I will use in this project is from Pew Research Center, a reliable and non-partisan "fact-tank". The specific dataset polls adults with HL ancestry on a variety of questions. The  questions asked on this survey that are relevant to this final project include firstly if they self-identify as HL (with all those surveyed having some sort of HL ancestry), and also if their mother, father, grandparents (both paternal and maternal), and great grandparents have HL ancestry. The survey was administered in the United States via telephone in the winter spanning from November 2015 to February 2016.
+The dataset I will use in this project is from Data.Gov, which is the home of the U.S. Government's open data. It is managed by the federal government's executive branch, and therefore it is highly reliable. The survey was administered in the United States via a biennial survey from 2001 to 2016. It was administered to students in grades 8, 10, and 12. This data set specifically examines California. 
 
-HL self-identification (or lack thereof) is my dependent -- or outcome -- variable. I will examine two independent -- or explanatory -- variables in my analysis. The first independent variable will be maternal lineage of HL ancestry vs. paternal lineage of HL ancestry. The maternal lineage will be measured based on the yes/no responses to if the individual's mother, maternal grandparents, or maternal great grandparents have HL ancestry. The paternal lineage will be measured based on the yes/no responses to if the individual's father, paternal grandparents, or paternal great grandparents have HL ancestry. The second independent variable will be the degree of ancestry (were your your parents, your grandparents, your great grandparents born in or outside of the US). These are measured based on questions on a PEW Research Center survey, all answered in a yes/no format. 
+In my examination of the research I will examine the rate of smoking as my dependent variable. I examine two main independent variables: the first being racial identity. I examine four main racial categories: African-American, Asian/Pacific Islander, Hispanic, and White. I understand that this excludes biracial people and may oversimplify the racial category in general, however it offers a broad enough set of options to give a reliable result. I examine two sexes: male and female. I will use the term sex rather than gender because gender identity tends to be more complicated while sex identity is often binary. (I recognize that there are Intersex people as well, however they compose such a small portion of the population -- and are not present in the data from this survey. In order to stay within the realm of this data set, I will consider the sex identity binary for this project.)
 
-I hypothesize that those who were born in a latinx or hispanic country (or have an immigrant parent) AND those who have 2 parents that are hispanic/latinx will identify more strongly. I hypothesize that stronger associations with the HL identity will be passed from foreign parents because they likely immigranted from the HL country. I hypothesize that stronger associations with the HL identity will be passed maternally because -- due to typical gender roles -- women tend to be more involved in child rearing. 
+I hypothesize that asian teenagers will smoke most, followed by their white peers. This is because smoking rates are highest among Asian countries, followed by much of Europe, According to the World Population Review. I hypothesize that more teenage boys will smoke than teenage girls because that was my personal experience in high school. 
 
 This research project has an observational research design, because it observes the independent and dependent variables without changing any variables in the equation. 
 
-The data set I use in this project is also accessible here. https://www.pewresearch.org/hispanic/dataset/2016-survey-of-self-identified-non-hispanics-with-hispanic-ancestry/
+The data set I use in this project is also accessible here. 
+https://catalog.data.gov/dataset/proportion-of-high-school-students-who-smoked-cigarettes-in-the-past-30-days-lghc-indicato-46afc
 
-Below is a plot showing the distribution of the outcome variable: 
+## Results Intro
+
+Below is the data of the independent and dependent variables: 
 
 ```{r}
-library(haven)
 library(sjlabelled)
 library(tidyverse)
+library(readr)
+library(broom)
 library(infer)
-pew <- read_sav("Pew/NSL2015 Omnibus_FOR RELEASE.sav")|>
-  sjlabelled::as_label()
-view(pew)
+library(readr)
+data <- read_csv("proportion-of-high-school-students-who-smoked-cigarettes-in-the-past-30-days-lghc-indicator-13 (1).csv")
 ```
+
+
 
 ```{r}
-data <- pew |>
-  select(q1, q4, q7q8_combo, q11a, q11b)
-data
+cigs <- data |>
+  mutate(Sex = factor(`Strata Name`, levels = c("Male", "Female")),
+         Race = case_when(`Strata Name` == "African-American" ~ 'Black',
+                          `Strata Name` == "Asian/Pacific Islander" ~ 'Asian', 
+                          `Strata Name` == "Hispanic" ~ 'Hispanic',
+                          `Strata Name` == "White" ~ 'White',
+                          `Strata Name` == "TRUE" ~ 'F'
+                                ),
+         Race = factor(Race, levels = c("White", "Black", "Hispanic", "Asian"))
+         ) |>
+  mutate(of_color = if_else(`Strata Name` == "White", "White", "Person of Color"))
+```
+
+histogram -- only supposed to be of the outcome variable 
+```{r}
+cigs |>
+  ggplot(mapping = aes(x = Rate)) +
+  geom_histogram(aes(y = ..density..))
 ```
 
 
-*****NEED TO MAKE A PLOT OF THIS OUTCOME VARIABLE******
+## Results for Race Independent Variable
+BIVARIATE PLOT OF OUTCOME AND RACE: 
+```{r}
+cigs_race <- cigs |>
+  select(Rate, Race) |>
+  drop_na() |>
+  group_by(Race) |>
+  summarize(rate_mean = mean(Rate)) 
+
+cigs_race_graph <- cigs_race |>
+  ggplot(mapping = aes(x = Race,
+                       y = rate_mean)) +
+  geom_col() + 
+  labs(x = "Race",
+       y = "Percent Smoke Cigarettes on Average",
+       title = "Rate of Cigarette Smoking by Race")
+cigs_race_graph
+  
+```
+
+This graph shows the rate of cigarette smoking on average for each race. The data points are taken from several years (2001 - 2016) and only measured on the basis of race in this chart. 
+
+```{r}
+mod_race <-
+  lm(
+    data = cigs |> filter(Strata == "Race-Ethnicity"),
+    Rate ~ Race)
+summary(mod_race)$coefficients |> knitr::kable(digits = 2,
+                                               col.names = c("Estimate Std.", "Error", "T Value", "P Value"))
+```
+
+## Results for Sex Independent Variable
+
+BIVARIATE PLOT OF OUTCOME AND SEX
+```{r}
+cigs_sex <- cigs |>
+  select(Rate, Sex) |>
+  drop_na() |>
+  group_by(Sex) |>
+  summarize(rate_mean = mean(Rate)) 
+
+cigs_sex_graph <- cigs_sex |>
+  ggplot(mapping = aes(x = Sex,
+                       y = rate_mean)) +
+  geom_col() + 
+  labs(x = "Sex",
+       y = "Percent Smoke Cigarettes on Average",
+       title = "Rate of Cigarette Smoking by Sex")
+cigs_sex_graph
+  
+```
 
 
-## Results 
-CODING:
-- Bivariate plot of the outcome (y-axis) and explanatory (x-axis) variable
-- Discussion of bivariate plot
-- Table of regression results
+```{r}
+mod_sex <-
+  lm(
+    data = cigs |> filter(Strata == "Sex"),
+    Rate ~ Sex)
+summary(mod_sex)$coefficients |> knitr::kable(digits = 2,
+                                              col.names = c("Estimate Std.", "Error", "T Value", "P Value"))
+```
 
-WRITTEN:
-- Discussion of regression results (coefficients, substantive meaning)
-- Discussion of significance (p-value, substantive meaning)
-- Discussion of causality, e.g. can the findings be interpreted causally? Why or why not?
-- Discussion of confounders, e.g. what could be a confounder, how could it influence the explanatory variable, how could it influence the outcome variable, is this confounder in your dataset and controlled for in your regression model?
+
+
 
 ## Conclusion 
 - summary of findings
+- Discussion of confounders, e.g. what could be a confounder, how could it influence the explanatory variable, how could it influence the outcome variable, is this confounder in your dataset and controlled for in your regression model?
 - limitations of final project analyses 
 - possible improvements 
 
+This final project does raise some possible confounding variables. Factors like education often play into whether individuals smoke or not. Although all teenagers are in school -- in grades 8-12 -- it is possible that the quality of education also plays a role. This data set does not account for socio-economic status, too, which is oftentimes the main driver in the quality of education... this could also make socio-economic status another potential confounding variable. Another possible confounding variable is whether or not an individual's parents smoke, which often allows them access to cigarettes -- more so than their peers with non-smoking parents. (I have observed this many times in my own personal experience in high school and through talking to many recovering/recovered addicts.) These counfounding variables could be 
+The discussion of the confounding variables highlights the limitations of this project. It is only able to properly examine a couple main independent variables -- race and sex -- while there are many others that make an impact. The main limitation of this project is that it does little to counter or accommodate these potential confounding variables. Another limitation of this project is that it only examines data within California and it has an observational set-up. This gives the study relatively high internal validity becuase they hold very true within the observed setting. However, it has lower external validity because it is not in a fully controlled setting. Because California is fairly representative of most of the US, we can assume that these results offer a helpful guideline for other states, but we cannot guarantee that the results would be mirrored perfectly -- because of this lower external validity due to the observational nature of this study. 
+
+Possible improvements to this study would require a more expansive data set. I would love to have similar data that ranges across the country with a much larger sample size. This would best control for errors and other confounding variables. I think it would be helpful to examine the role of socio-economic status (which also ties into quality of education), parental smoking habits, and geographical location. These are variables that I was unable to discuss within the scope of this project, partially due to the nature of the project length and also because data sets this expansive are not readily available. Therefore, I suggest a nation-wide survey that would cover all of these variables in order to best explore this subject matter and provide anti-smoking campaigns with the best information possible as we continue to battle this epidemic. 
 
 
-## WORK FROM BEFORE: 
-
-```{r}
-nationality <- pew |>
-  select(q1, q3_combo) |>
-  mutate(q1 = ifelse(q1 == "No",0,1)) |>
-  count(q3_combo) 
-number_each_country
-knitr::kable(nationality,
-             col.names = c("Nationality", "Count"))
-```
 
 
-- do regressions, do regressions on subsets of data too 
 
-- having descriptive statistics -- sometimes on 1 variable at a time, but usually between 2+ variables --> showing relationship on deeper level than a scatter plot (AKA regression, difference in means, etc.)
+
+
+
+
+
