@@ -8,31 +8,27 @@ output:
 ---
 ## Introduction
 
-This final project will explore data related to smoking in high schools in California. The smoking epidemic is terrifying, and the vast majority of nicotine addicts begin smoking in high school. According to the National Cancer Institute, 90% of daily cigarette smokers started before the age of eighteen ... which is in high school. The data is from Data.Gov (which is also available at this link: https://catalog.data.gov/dataset/proportion-of-high-school-students-who-smoked-cigarettes-in-the-past-30-days-lghc-indicato-46afc).  The data draws from California high schools.
+This final project will explore data related to smoking in high schools in California. The smoking epidemic is terrifying, and the vast majority of nicotine addicts begin smoking in high school. According to the National Cancer Institute, 90% of daily cigarette smokers started before the age of eighteen ... which is in high school. The data is from Data.Gov (which is also available at this link: https://catalog.data.gov/dataset/proportion-of-high-school-students-who-smoked-cigarettes-in-the-past-30-days-lghc-indicato-46afc). The data draws from California high schools.
 
 I think it is important to look at this sort of data set firstly because we KNOW -- from statistics like the National Cancer Institute's -- that high schoolers are the most at risk for developing cigarette addictions. Smoking cigarettes is linked to roughly 80-90% of lung cancer deaths in the United States, according to the CDC, and over 130 thousand people die of lung cancer annually (on average) in the US, according to Lung Cancer Facts 2022. In order to understand the root of this epidemic -- and combat it -- we must better understand which teenagers are most at risk so that we can best allocate our resources to fighting nicotine addictions. 
 
 This topic is of particular interest to me because my grandma (a smoker) died of cancer, and I have several friends with nicotine addictions who developed them in high school. Though we had some anti-smoking notices, there were very few. I also grew up in Alcoholics Anonymous meetings, where the vast majority of people smoked. Listening to individuals' stories, week after week, I learned at a young age that most of them started drinking and smoking in high school. I would like to do this project in order to assemble quantitative data to help inform anti-smoking campaigns so that they can be as effective as possible. It is truly an epidemic, and I hope that this project will give greater insight into who is at the greatest risk. 
-
-## Data and Research Design 
-
-Individual teenagers (in high school) who smoke vary in their demographics, both in terms of their racial identity and their sex identity (ie. male v female). This project only examines students who do smoke cigarettes. 
-
-The dataset I will use in this project is from Data.Gov, which is the home of the U.S. Government's open data. It is managed by the federal government's executive branch, and therefore it is highly reliable. The survey was administered in the United States via a biennial survey from 2001 to 2016. It was administered to students in grades 8, 10, and 12. This data set specifically examines California. 
-
-In my examination of the research I will examine the rate of smoking as my dependent variable. I examine two main independent variables: the first being racial identity. I examine four main racial categories: African-American, Asian/Pacific Islander, Hispanic, and White. I understand that this excludes biracial people and may oversimplify the racial category in general, however it offers a broad enough set of options to give a reliable result. I examine two sexes: male and female. I will use the term sex rather than gender because gender identity tends to be more complicated while sex identity is often binary. (I recognize that there are Intersex people as well, however they compose such a small portion of the population -- and are not present in the data from this survey. In order to stay within the realm of this data set, I will consider the sex identity binary for this project.)
+Individual teenagers (in high school) who smoke vary in their demographics, both in terms of their racial identity and their sex identity (ie. male v female). This project only examines students who do smoke cigarettes. The broader puzzle I reference in this study is how identity intersects -- and affects -- teenager smoking rates. In order to best address this broader puzzle, the specific research question I pose (and will answer) in this project is: "Which racial group and which sex smokes cigarettes most (and least)?" 
 
 I hypothesize that asian teenagers will smoke most, followed by their white peers. This is because smoking rates are highest among Asian countries, followed by much of Europe, According to the World Population Review. I hypothesize that more teenage boys will smoke than teenage girls because that was my personal experience in high school. 
 
-This research project has an observational research design, because it observes the independent and dependent variables without changing any variables in the equation. 
+## Data and Research Design 
+
+The data set I will use in this project is from Data.Gov, which is the home of the U.S. Government's open data. It is managed by the federal government's executive branch, and therefore it is highly reliable. The survey was administered in the United States via a biennial survey from 2001 to 2016. It was administered to students in grades 8, 10, and 12. This data set specifically examines California. 
+
+In my examination of the research I will examine the rate of smoking as my dependent variable. I examine two main independent variables: the first being racial identity. I examine four main racial categories: African-American, Asian/Pacific Islander, Hispanic, and White. I understand that this excludes biracial people and may oversimplify the racial category in general, however it offers a broad enough set of options to give a reliable result. I examine two sexes: male and female. I will use the term sex rather than gender because gender identity tends to be more complicated while sex identity is often binary. (I recognize that there are Intersex people as well, however they compose such a small portion of the population -- and are not present in the data from this survey. In order to stay within the realm of this data set, I will consider the sex identity binary for this project.)
+
+This research project is a cross-sectional study. This means that it is an observational study that looks at data of a certain population in a certain time. The population of this data set is Californian teenagers and the time range is from 2001-2016. This study is clearly observational because it measures the independent and dependent variables without changing any variables in the equation.  
 
 The data set I use in this project is also accessible here. 
 https://catalog.data.gov/dataset/proportion-of-high-school-students-who-smoked-cigarettes-in-the-past-30-days-lghc-indicato-46afc
 
-## Results Intro
-
-Below is the data of the independent and dependent variables: 
-
+Loading the Data:
 ```{r}
 library(sjlabelled)
 library(tidyverse)
@@ -42,9 +38,7 @@ library(infer)
 library(readr)
 data <- read_csv("proportion-of-high-school-students-who-smoked-cigarettes-in-the-past-30-days-lghc-indicator-13 (1).csv")
 ```
-
-
-
+Organizing the Data to Best Interpret it Later:
 ```{r}
 cigs <- data |>
   mutate(Sex = factor(`Strata Name`, levels = c("Male", "Female")),
@@ -59,16 +53,21 @@ cigs <- data |>
   mutate(of_color = if_else(`Strata Name` == "White", "White", "Person of Color"))
 ```
 
-histogram -- only supposed to be of the outcome variable 
+The main coefficient of interest here is the rate of smoking among Californian high school teenagers. This coefficient is what this study will examine as its outcome/dependent variable. However, this study will also examine other coefficients as discussed above. This includes the correlation between race, sex, and smoking rates, in order to better understand relationships between all involved variables. 
+
+Creating a Histogram of the Outcome Variable:
 ```{r}
 cigs |>
   ggplot(mapping = aes(x = Rate)) +
-  geom_histogram(aes(y = ..density..))
+  geom_histogram(aes(y = ..density..)) +
+  labs(x = "Smoking Rates",
+       y = "Density",
+       title = "Histogram of Smoking Rates")
 ```
-
+This histogram displays the outcome variable: the rate of smoking. Smoking rates are displayed along the x-axis of the chart and range from slightly above 0 to slightly above 21. This shows a wide range in the amount of smoking. The density of these smoking rates -- or how common they are among the different groups of Californian teens surveyed -- is displayed on the y-axis. The densities vary from 0 to nearly .20. The most "dense" or common rate of smoking is just below .20 on the y axis and located at about 13 (on the x axis), showing that it is not uncommon for 13% of any given demographic group (from this data set) to smoke -- and that in about 18% of all demographic groups, 13% of those asked will smoke cigarettes.
 
 ## Results for Race Independent Variable
-BIVARIATE PLOT OF OUTCOME AND RACE: 
+Creating a Bivariate Plot of the Outcome and Race: 
 ```{r}
 cigs_race <- cigs |>
   select(Rate, Race) |>
@@ -86,8 +85,7 @@ cigs_race_graph <- cigs_race |>
 cigs_race_graph
   
 ```
-
-This graph shows the rate of cigarette smoking on average for each race. The data points are taken from several years (2001 - 2016) and only measured on the basis of race in this chart. 
+This bar graph shows the rate of cigarette smoking on average for each race. The data points are taken from several years (2001 - 2016) and only measured on the basis of race in this chart. The x-axis displays the race in four separate columns: White, Black, Hispanic, and Asian. The y-axis shows the percentage of each group who smoke cigarettes. The y-axis averages the data provided through the years in order to measure each demographic. The bar graph shows that white teenagers tended to smoke cigarettes the most because the "White" column is tallest. This shows that -- on average -- the white teenagers smoked at a rate of 15%, based on the data set. The lowest column represents the Asian teenagers surveyed, who tended to smoke cigarettes at roughly a rate of 8.75%. Black teenagers smoked at the second lowest rate, at just below 10%. Hispanic teenagers smoked at the second highest rate, at about 12%. The rough difference between white teenagers (the largest smoking group) and asian teenagers (the smallest smoking group) is about 6%, which is a very noticeable difference. The difference between white teenagers and hispanic teenagers (the second biggest smoking group) is also about 3%, which is quite significant as well. This bar graph provides valuable data showing that white teenagers are noticeably the biggest smoking group.
 
 ```{r}
 mod_race <-
@@ -95,8 +93,17 @@ mod_race <-
     data = cigs |> filter(Strata == "Race-Ethnicity"),
     Rate ~ Race)
 summary(mod_race)$coefficients |> knitr::kable(digits = 2,
-                                               col.names = c("Estimate Std.", "Error", "T Value", "P Value"))
+                                               col.names = c("Est. SD", "Error", "T-Value", "P-Value"))
 ```
+
+This regressions table shows the effect of race on how much students tend to smoke cigarettes. In this table, we consider white students to be the intercept, or the baseline, of our studies, because white students smoked at the highest rates. From there, under the "Est SD" column, we can see how far each other racial demographic varies from the white teenagers. The negative in front of all three other groups shows that they all smoke fewer cigarettes than the white average (if they were positive, that would show that they smoked on average more cigarettes than their white peers). This regression table enforces that hispanics smoked the second most, as their -3.00 is the smallest value, showing that their smoking rates are closest to that of tehir white peers. It also reinforces that Black students smoked third most, because their -5.67 is the second lowest value, showing that they're second closest to the white students. Asian students once more demonstrate the lowest smoking average, with a -6.36 difference from their white peers. The largest value here shows that they vary the most from the white baseline/intercept.
+
+The error column shows the possible error in each calculation, with equal error (2.16) among all groups except the white intercept which has 1.53 as its error value. This suggests that results could theoretically vary by 2.16 points in either direction. Regardless of whether or not all groups increased by 2.16, white students would still smoke the most on average. 
+The T-values are not terribly important to the results of this experiment, but they measure the differences compared to the variation in data overall. The smaller the T value is, the less evidence it holds against the null hyothesis -- and because the T-values are not negligible, there is some evidence against the null hypothesis. 
+
+The P-values shown in the far right of the table show the probability of getting the same results -- or values that emphasize the same result to at least the same extent (or greater) -- if redoing the test. A lower p-value suggests that the null hypothesis is not true. Therefore, a p-value of 0, suggests that the null is false. Similarly, the 0.01 p-values also strongly suggest that the null hypothesis is not true. In this case, the null hypothesis would be the opposite of our main findings for each race (ie. that white teenagers smoke the least for the data provided on white teens as the baseline). 
+
+I would say taht given the medium level errors on the regression table, that these results are relatively statistically significant, but have room for further investigation. These results on race are not strong enough to show any sort of causality, but they do show a correlation between racial groups the the likelihood of smoking. A more controlled experiment set-up for this variable would be necessary to show causality, and observational data often does not allow for the effective establishment of causality. That said, the results show a clear correlation, and so we can still make inferences about how race affects smoking cigarettes for teenagers. However, no certain causality may be established at this point.
 
 ## Results for Sex Independent Variable
 
@@ -118,7 +125,7 @@ cigs_sex_graph <- cigs_sex |>
 cigs_sex_graph
   
 ```
-
+This bar graph shows the rate of cigarette smoking on average for both sexes The data points are taken from several years (2001 - 2016) and only measured on the basis of sex in this chart. The x-axis displays the race in two separate columns: Male and Female. The y-axis shows the percentage of each group who smoke cigarettes. The y-axis averages the data provided through the years (2001-2016) in order to measure each demographic. The bar graph shows that male teenagers tended to smoke cigarettes more than female teenagers. The "Male" column reaches roughly 14%. The "Female" column, on the other hand, reaches roughly 11%, suggesting about a 3% difference between teenagers on the basis of sex. This is a relatively noticeable difference that provides valuable quantitative data. 
 
 ```{r}
 mod_sex <-
@@ -128,20 +135,26 @@ mod_sex <-
 summary(mod_sex)$coefficients |> knitr::kable(digits = 2,
                                               col.names = c("Estimate Std.", "Error", "T Value", "P Value"))
 ```
+This regressions table shows the effect of sex on how many students tend to smoke cigarettes. In this table, we consider male students to be the intercept, or the baseline, of our studies, because male students smoked at a higher rates. From there, under the "Est SD" column, we can see how far the female demographic varies from the male teenagers. The negative in front of the female group shows that female teenagers tend to smoke fewer cigarettes than the white average (if they were positive, that would show that they smoked on average more cigarettes than their white peers). This regression table enforces that females smoked on average 3.30 points less than their male peers. This is a relatively significant difference, suggesting that cigarette smoking is a larger issue among male teenagers.
 
+The error column shows the possible error in each calculation, with equal error in both groups. This suggests that results could theoretically vary by 1.56 points for male teenagers or 2.20 points for female teenagers in either direction. Even considering these fluctuations, the net average of both male and female groups suggests that it would be quite unlikely -- and take all of the error on both measurements -- for female cigarette smoking to outweigh male cigarette smoking in general. 
 
+The T-values are not terribly important to the results of this experiment, but they measure the differences compared to the variation in data overall. However, the P-values shown in the far right of the table are more important, and they show the probability of getting the same results -- or values that emphasize the same result to at least the same extent (or greater) -- if redoing the test. A lower p-value suggests that the null hypothesis is not true. Therefore, a p-value of 0, suggests that the null is false. Similarly, the 0.16 p-value (for female teenagers) also somewhat suggests that the null hypothesis is not true. However, this is a large enough value that suggests we should not disregard the null hypothesis in this case. This makes sense because of the error considered in the above paragraph, where there is a possibility -- though very tiny -- that if the error played out in a certain way, the data could show a greater smoking rate among female teenagers than male teenagers (although by very little). There is a very small chance of this though, which is reflected in the 0.16 -- big enough to be significant, but not big enough to be THAT signficant. In this case, the null hypothesis would be the opposite of our main findings for each race (ie. that male teenagers smoke the least from the data provided on teens of both sexes). 
 
+I would say that based on the regression table, these results are relatively statistically significant. The error margins are a little larger than preferable, but the regression table shows a pretty strong correlation. These results on sex identity are not strong enough to show any sort of causality, but they do show a correlation. Causality would require a more controlled experiment set-up for this variable, because the establishment of causality is oftentimes not possible with observational data. However, the results definitely show a correlation, on which we can make inferences. At this point in time with this data set, these results may not be effectively interpreted causally.
 
 ## Conclusion 
-- summary of findings
-- Discussion of confounders, e.g. what could be a confounder, how could it influence the explanatory variable, how could it influence the outcome variable, is this confounder in your dataset and controlled for in your regression model?
-- limitations of final project analyses 
-- possible improvements 
+
+My findings show that white teenagers are the largest cigarette smokers racial demographic ... 
+- bring in how this says ur hypothesis are wrong (or just say ur hypotheses)
 
 This final project does raise some possible confounding variables. Factors like education often play into whether individuals smoke or not. Although all teenagers are in school -- in grades 8-12 -- it is possible that the quality of education also plays a role. This data set does not account for socio-economic status, too, which is oftentimes the main driver in the quality of education... this could also make socio-economic status another potential confounding variable. Another possible confounding variable is whether or not an individual's parents smoke, which often allows them access to cigarettes -- more so than their peers with non-smoking parents. (I have observed this many times in my own personal experience in high school and through talking to many recovering/recovered addicts.) These counfounding variables could be 
 The discussion of the confounding variables highlights the limitations of this project. It is only able to properly examine a couple main independent variables -- race and sex -- while there are many others that make an impact. The main limitation of this project is that it does little to counter or accommodate these potential confounding variables. Another limitation of this project is that it only examines data within California and it has an observational set-up. This gives the study relatively high internal validity becuase they hold very true within the observed setting. However, it has lower external validity because it is not in a fully controlled setting. Because California is fairly representative of most of the US, we can assume that these results offer a helpful guideline for other states, but we cannot guarantee that the results would be mirrored perfectly -- because of this lower external validity due to the observational nature of this study. 
 
 Possible improvements to this study would require a more expansive data set. I would love to have similar data that ranges across the country with a much larger sample size. This would best control for errors and other confounding variables. I think it would be helpful to examine the role of socio-economic status (which also ties into quality of education), parental smoking habits, and geographical location. These are variables that I was unable to discuss within the scope of this project, partially due to the nature of the project length and also because data sets this expansive are not readily available. Therefore, I suggest a nation-wide survey that would cover all of these variables in order to best explore this subject matter and provide anti-smoking campaigns with the best information possible as we continue to battle this epidemic. 
+
+
+
 
 
 
